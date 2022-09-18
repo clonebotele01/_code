@@ -267,6 +267,7 @@ async def getTokenInfo(token_ca):
             return False
         else:
             token_decimal = TokenContract.functions.decimals().call()
+            total_supply =  TokenContract.functions.totalSupply().call()
             balance = TokenContract.functions.balanceOf(sender_wallet).call()
             readable = 0
             readable_in_usd = 0
@@ -301,10 +302,11 @@ async def getTokenInfo(token_ca):
 
             if Tokenprice < 0.001:
                 poocoin_url = "https://poocoin.app/tokens/{}".format(token_ca)
-                message = "CA: {}\nToken: {} \nToken Price: {:.3e} USD \nHoneyPot: {}\nBuy - Sell tax: {}% - {}% \n ---------------------------- \n<b>Wallet balance:</b> {:.3f} {} ({:.3f} USDT - {:.3f} BNB - {:.3f} BNB with Tax)\n ".format(
+                message = "CA: {}\nToken: {} \nToken Price: {:.3e} USD \nMarket Cap: {}\nHoneyPot: {}\nBuy - Sell tax: {}% - {}% \n ---------------------------- \n<b>Wallet balance:</b> {:.3f} {} ({:.3f} USDT - {:.3f} BNB - {:.3f} BNB with Tax)\n ".format(
                     token_ca,
                     token_symbol,
                     Tokenprice,
+                    Tokenprice * total_supply,
                     honeypot_str,
                     buy_tax_str,
                     sell_tax_str,
@@ -323,8 +325,9 @@ async def getTokenInfo(token_ca):
                                                   ])
             else:
                 poocoin_url = "https://poocoin.app/tokens/{}".format(token_ca)
-                message = "CA: {} \nToken: {} \nToken Price: {:.3f} USD \nHoneyPot: {}\nBuy - Sell tax: {}% - {}% \n ---------------------------- \n<b>Wallet balance:</b> {:.3f} {} ({:.3f} USDT - {:.3f} BNB - {:.3f} BNB with Tax)\n ".format(token_ca,token_symbol,
+                message = "CA: {} \nToken: {} \nToken Price: {:.3f} USD \nMarket Cap: {}\nHoneyPot: {}\nBuy - Sell tax: {}% - {}% \n ---------------------------- \n<b>Wallet balance:</b> {:.3f} {} ({:.3f} USDT - {:.3f} BNB - {:.3f} BNB with Tax)\n ".format(token_ca,token_symbol,
                                                                                                                                                                                           Tokenprice,
+                                                                                                                                                                                          Tokenprice * total_supply,
                                                                                                                                                                                           honeypot_str,
                                                                                                                                                                                           buy_tax_str,
                                                                                                                                                                                           sell_tax_str,
