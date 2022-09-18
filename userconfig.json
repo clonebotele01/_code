@@ -1,0 +1,19 @@
+{
+  "wallet_address" : "0x605D53Fa4892cB2C2B92BE0340461B6C4948540b",
+  "private_key" : "",
+
+  "BNB_Amount" : "0.05",
+  "BUSD_Amount" : "20",
+  "Gaswei" : 5,
+  "Gaslimit": 1500000,
+  "Slip": 50,
+  "NumTx": 1,
+  "Sell_percent" : 99,
+
+  "API_ID" : "",
+  "API_HASH" : "",
+  "BOT_TOKEN" : "",
+
+  "RPC_Node" : "https://bsc-dataseed.binance.org/"
+}
+
