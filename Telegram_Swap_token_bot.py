@@ -454,8 +454,8 @@ async def my_event_handler(event):
                 checkToken = await checkTokenCA(token)
                 if checkToken[0] == True :
                     if token not in track_list_dict:
-                        await sendMessage("Token .. is not in track list!".format(checkToken[1]))
-                    else :
+                        await sendMessage("Token {} is not in track list!".format(checkToken[1]))
+                    else:
                         track_list_dict.pop(token,None)
                         await sendMessage("Removing token {} from track list!".format(checkToken[1]))
                         await updateTracklist(track_list_dict)
@@ -599,7 +599,7 @@ async def my_event_handler(event):
 @client.on(events.CallbackQuery())
 async def call_handler(event):
     global BNBAmount, Gaswei, GasLimit, Slip, numTx, sell_percent, latest_ca, list_track
-    global Tracking_threads, Tracking_threads_job, Tracking_threads_count
+    global track_list_dict
     if event.data == b"buy":
         get_message = await event.get_message()
         message_text = get_message.text
@@ -638,21 +638,27 @@ async def call_handler(event):
         token_ca = message_text[loc:loc+42]
         token_flag = await checkTokenCA(token_ca)
         if token_flag[0] == True:
-            if token_ca.lower() not in list_track:
-                await sendMessage("Adding token {} to track list".format(token_flag[1]))
-                list_track.append(token_ca.lower())
+            token = token_ca.lower()
+            if token not in track_list_dict:
+                track_list_dict[token] = dict()
+                track_list_dict[token]["Symbol"] = token_flag[1]
+                await updateTracklist(track_list_dict)
+            else:
+                await sendMessage("Token {} already in track list!".format(token_flag[1]))
 
     if event.data == b"remove":
         get_message = await event.get_message()
         message_text = get_message.text
         loc = message_text.find("0x")
         token_ca = message_text[loc:loc+42]
-        token_flag = await checkTokenCA(token_ca)
-        if token_ca.lower() in list_track:
-            await sendMessage("Removing token {} to track list".format(token_flag[1]))
-            list_track.remove(token_ca.lower())
-        else:
-            await sendMessage("Token {} is not in track list".format(token_flag[1]))
+        checkToken = await checkTokenCA(token_ca)
+        if checkToken[0] == True:
+            if token_ca not in track_list_dict:
+                await sendMessage("Token {} is not in track list!".format(checkToken[1]))
+            else:
+                track_list_dict.pop(token_ca, None)
+                await sendMessage("Removing token {} from track list!".format(checkToken[1]))
+                await updateTracklist(track_list_dict)
 
 client.start()
 print("Start client!")
